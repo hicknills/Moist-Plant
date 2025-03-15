@@ -1,0 +1,31 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore environment files
+.env
+venv/
+*.sqlite3
+
+# Ignore logs and database dumps
+logs/
+*.log
+*.db
+*.sql
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore VS Code and PyCharm settings
+.vscode/
+.idea/
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore secret keys
+config.py
+instance/
