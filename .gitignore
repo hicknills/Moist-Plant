@@ -7,7 +7,10 @@ __pycache__/
 .env
 venv/
 *.sqlite3
+<<<<<<< HEAD
 .flaskenv
+=======
+>>>>>>> 2406cdd7c8ecc72c7da3c25901f0cc98eea58bf3
 
 # Ignore logs and database dumps
 logs/
