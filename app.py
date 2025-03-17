@@ -7,22 +7,26 @@ from bson.json_util import dumps
 load_dotenv()
 
 app = Flask(__name__)
-mongo_db_url = os.environ.get("MONGO_DB_CONN_STRING") # get DB url
-mongo_db_name = os.environ.get("MONGO_DB_NAME_STRING") # get DB name
+mongo_db_url = "mongodb+srv://MOIST-PLANT:MOIST-PLANT@moist-plant-db.1ar5z.mongodb.net/?retryWrites=true&w=majority&appName=MOIST-PLANT-DB" # DB url
+mongo_db_name = "Plant-Project" # get DB name
 
 client = MongoClient(mongo_db_url)
 db = client[mongo_db_name]
 
+@app.route('/')
+def home():
+    return "Welcome to the Flask App! Navigate to /api/sensors to interact with sensors."
+
 # this will respond to any HTTP GET request with the path "/api/sensors", with args looks like /api/sensors?sensor_id=led_1
 @app.get("/api/sensors")
 def get_sensors():
-    name = request.args.get('name')
-    filter = {"name": name}
+    sensor_id = request.args.get('sensor_id')  # Use 'sensor_id' instead of 'name'
+    filter = {"sensor_id": sensor_id}  # Update the filter to use 'sensor_id'
     print("filter: ", filter)
-    sensors = list(db.Sensors.find(filter)) # call find on the Sensor collection, apply the filter from above
+    sensors = list(db.Sensors.find(filter))  # query MongoDB with the updated filter
     
-    # convert BSON object to JSON, status=success
-    response = Response(response=dumps(sensors), status=200,  mimetype="application/json") 
+    # Convert BSON object to JSON and send the response
+    response = Response(response=dumps(sensors), status=200, mimetype="application/json")
     return response
 
 # respond to POST, add the json doc that is passed, 
@@ -43,3 +47,10 @@ def add_sensor():
     db.Sensors.insert_one(_json)
 
     return jsonify({"message": "Sensor added successfully"}), 201  # Use 201 for created
+
+@app.route('/helloesp')
+def helloHandler():
+    return 'Hello ESP8266, from Flask'
+ 
+if __name__ == "__main__":
+   app.run(host='0.0.0.0', port=80) # open app to all IPs on port 80
